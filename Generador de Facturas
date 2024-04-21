@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Facturas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Estilos CSS */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .info-group, .product-group {
+            margin-bottom: 15px;
+        }
+
+        .info-group label, .product-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: calc(50% - 5px);
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .invoice-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .business-info, .client-info, .total-section, .signature {
+            margin-bottom: 20px;
+        }
+
+        .signature p {
+            text-align: right;
+        }
+
+        .fa {
+            margin-right: 5px;
+        }
+
+        .download-btn {
+            margin-top: 20px;
+            display: block;
+            text-align: center;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 20px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-file-invoice"></i> Generador de Facturas</h1>
+        <div class="form">
+            <div class="info-group">
+                <label for="nombreNegocio"><i class="fas fa-store-alt"></i> Nombre del Negocio:</label>
+                <input type="text" id="nombreNegocio">
+            </div>
+            <div class="info-group">
+                <label for="direccionNegocio"><i class="fas fa-map-marker-alt"></i> Dirección del Negocio:</label>
+                <input type="text" id="direccionNegocio">
+            </div>
+            <div class="info-group">
+                <label for="telefonoNegocio"><i class="fas fa-phone-alt"></i> Teléfono:</label>
+                <input type="text" id="telefonoNegocio">
+            </div>
+            <div class="info-group">
+                <label for="nombreCliente"><i class="fas fa-user"></i> Nombre del Cliente:</label>
+                <input type="text" id="nombreCliente">
+            </div>
+            <div class="info-group">
+                <label for="direccionCliente"><i class="fas fa-map-marker-alt"></i> Dirección del Cliente:</label>
+                <input type="text" id="direccionCliente">
+            </div>
+            <div class="info-group">
+                <label for="elaboradaPor"><i class="fas fa-user-edit"></i> Elaborada Por:</label>
+                <input type="text" id="elaboradaPor">
+            </div>
+            <div class="info-group">
+                <label for="moneda"><i class="fas fa-coins"></i> Moneda:</label>
+                <select id="moneda">
+                    <option value="USD">$ Dólar estadounidense</option>
+                    <option value="EUR">€ Euro</option>
+                    <option value="GBP">£ Libra esterlina</option>
+                    <option value="JPY">¥ Yen japonés</option>
+                    <option value="ARS">$ Peso Argentino</option>
+                    <option value="CLP">$ Peso Chileno</option>
+                    <option value="COP">$ Peso Colombiano</option>
+                    <option value="MXN">$ Peso Mexicano</option>
+                    <option value="PEN">S/ Nuevo Sol Peruano</option>
+                    <option value="BRL">R$ Real Brasileño</option>
+                    <option value="VES">Bs Bolívar Venezolano</option>
+                    <option value="CRC">₡ Colón Costarricense</option>
+                    <option value="GTQ">Q Quetzal Guatemalteco</option>
+                    <option value="HNL">L Lempira Hondureño</option>
+                    <option value="NIO">C$ Córdoba Nicaragüense</option>
+                    <option value="PAB">B/. Balboa Panameño</option>
+                </select>
+            </div>
+            <div class="product-group">
+                <label for="productoNombre"><i class="fas fa-tag"></i> Producto:</label>
+                <input type="text" id="productoNombre">
+                <label for="productoPrecio"><i class="fas fa-dollar-sign"></i> Precio:</label>
+                <input type="number" id="productoPrecio">
+                <label for="productoCantidad"><i class="fas fa-sort-numeric-up-alt"></i> Cantidad:</label>
+                <input type="number" id="productoCantidad" value="1" min="1">
+                <button onclick="agregarProducto()"><i class="fas fa-plus-circle"></i> Agregar Producto</button>
+            </div>
+            <table id="tablaProductos">
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                </tr>
+            </table>
+            <div class="total">
+                <label for="abono"><i class="fas fa-coins"></i> Abono:</label>
+                <input type="number" id="abono">
+                <label for="resta"><i class="fas fa-dollar-sign"></i> Resta:</label>
+                <input type="number" id="resta" readonly>
+            </div>
+            <button onclick="generarFactura()"><i class="fas fa-file-invoice"></i> Generar Factura</button>
+            <button onclick="compartirFactura()"><i class="fab fa-whatsapp"></i> Compartir por WhatsApp</button>
+            <button onclick="limpiarDatos()"><i class="fas fa-trash-alt"></i> Limpiar Datos</button>
+            <div id="facturaImagen" style="display: none;"></div>
+            <div class="download-btn" id="downloadBtn" style="display: none;">
+                <button onclick="guardarFactura()"><i class="fas fa-download"></i> Descargar Factura como HTML</button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-text">Powered by Eddycorp Apps 2024</div>
+    <script>
+        let total = 0;
+        let numeroFactura = 1;
+
+        function agregarProducto() {
+            const nombreProducto = document.getElementById("productoNombre").value.trim();
+            const precioProducto = parseFloat(document.getElementById("productoPrecio").value);
+            const cantidadProducto = parseInt(document.getElementById("productoCantidad").value);
+
+            if (nombreProducto === "" || isNaN(precioProducto) || precioProducto <= 0 || isNaN(cantidadProducto) || cantidadProducto <= 0) {
+                alert("Por favor, ingrese un nombre, precio y cantidad válidos para el producto.");
+                return;
+            }
+
+            const tablaProductos = document.getElementById("tablaProductos");
+            const newRow = tablaProductos.insertRow(-1);
+            const cell1 = newRow.insertCell(0);
+            const cell2 = newRow.insertCell(1);
+            const cell3 = newRow.insertCell(2);
+            cell1.textContent = nombreProducto;
+            cell2.textContent = precioProducto.toFixed(2);
+            cell3.textContent = cantidadProducto;
+
+            const subtotal = precioProducto * cantidadProducto;
+            total += subtotal;
+            document.getElementById("resta").value = total.toFixed(2);
+
+            document.getElementById("productoNombre").value = "";
+            document.getElementById("productoPrecio").value = "";
+            document.getElementById("productoCantidad").value = 1;
+        }
+
+        function generarFactura() {
+            const nombreNegocio = document.getElementById("nombreNegocio").value;
+            const direccionNegocio = document.getElementById("direccionNegocio").value;
+            const telefonoNegocio = document.getElementById("telefonoNegocio").value;
+            const nombreCliente = document.getElementById("nombreCliente").value;
+            const direccionCliente = document.getElementById("direccionCliente").value;
+            const elaboradaPor = document.getElementById("elaboradaPor").value;
+            const abono = parseFloat(document.getElementById("abono").value);
+            const resta = total - abono;
+            const moneda = document.getElementById("moneda").value;
+
+            const facturaHTML = `
+                <div class="invoice-container">
+                    <div class="header">
+                        <h2><i class="fas fa-file-invoice"></i> Factura</h2>
+                        <h3>${nombreNegocio}</h3>
+                        <p>Número de Factura: ${numeroFactura}</p>
+                        <p>Fecha: ${new Date().toLocaleDateString()}</p>
+                    </div>
+                    <div class="business-info">
+                        <p><strong>${nombreNegocio}</strong></p>
+                        <p><i class="fas fa-map-marker-alt"></i> Dirección: ${direccionNegocio}</p>
+                        <p><i class="fas fa-phone-alt"></i> Teléfono: ${telefonoNegocio}</p>
+                    </div>
+                    <div class="client-info">
+                        <p><strong>Cliente:</strong> ${nombreCliente}</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Dirección: ${direccionCliente}</p>
+                    </div>
+                    <table>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio (${moneda})</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal (${moneda})</th>
+                        </tr>
+                        ${Array.from(document.getElementById("tablaProductos").rows).slice(1).map(row => `
+                            <tr>
+                                <td>${row.cells[0].textContent}</td>
+                                <td>${row.cells[1].textContent}</td>
+                                <td>${row.cells[2].textContent}</td>
+                                <td>${(parseFloat(row.cells[1].textContent) * parseInt(row.cells[2].textContent)).toFixed(2)}</td>
+                            </tr>
+                        `).join('')}
+                    </table>
+                    <div class="total-section">
+                        <p><strong>Total:</strong> ${total.toFixed(2)} ${moneda}</p>
+                        <p><strong>Abono:</strong> ${abono.toFixed(2)} ${moneda}</p>
+                        <p><strong>Resta:</strong> ${resta.toFixed(2)} ${moneda}</p>
+                    </div>
+                    <div class="signature">
+                        <p><i class="fas fa-user-edit"></i> Elaborada Por: ${elaboradaPor}</p>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById("facturaImagen").innerHTML = facturaHTML;
+            document.getElementById("facturaImagen").style.display = "block";
+            document.getElementById("downloadBtn").style.display = "block";
+            numeroFactura++;
+        }
+
+        function compartirFactura() {
+            const nombreNegocio = document.getElementById("nombreNegocio").value;
+            const direccionNegocio = document.getElementById("direccionNegocio").value;
+            const telefonoNegocio = document.getElementById("telefonoNegocio").value;
+            const nombreCliente = document.getElementById("nombreCliente").value;
+            const direccionCliente = document.getElementById("direccionCliente").value;
+            const elaboradaPor = document.getElementById("elaboradaPor").value;
+            const abono = parseFloat(document.getElementById("abono").value);
+            const resta = total - abono;
+            const moneda = document.getElementById("moneda").value;
+
+            const mensaje = `
+                Factura:
+                -------------------
+                Negocio: ${nombreNegocio}
+                Dirección: ${direccionNegocio}
+                Teléfono: ${telefonoNegocio}
+                
+                Cliente: ${nombreCliente}
+                Dirección: ${direccionCliente}
+                
+                Productos:
+                ${Array.from(document.getElementById("tablaProductos").rows).slice(1).map(row => `
+                    - ${row.cells[0].textContent} x${row.cells[2].textContent}: ${row.cells[1].textContent} ${moneda} (${(parseFloat(row.cells[1].textContent) * parseInt(row.cells[2].textContent)).toFixed(2)} ${moneda})
+                `).join('')}
+                
+                Total: ${total.toFixed(2)} ${moneda}
+                Abono: ${abono.toFixed(2)} ${moneda}
+                Resta: ${resta.toFixed(2)} ${moneda}
+                
+                Elaborada Por: ${elaboradaPor}
+            `;
+
+            const whatsappURL = `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
+            window.open(whatsappURL, "_blank");
+        }
+
+        function guardarFactura() {
+            const facturaContainer = document.querySelector('.invoice-container');
+            const facturaHTML = facturaContainer.innerHTML;
+
+            const blob = new Blob([facturaHTML], { type: "text/html" });
+            saveAs(blob, "factura.html");
+        }
+
+        function limpiarDatos() {
+            // Limpiar todos los campos del formulario
+            document.querySelectorAll('input').forEach(input => input.value = '');
+            document.getElementById('tablaProductos').innerHTML = `
+                <tr>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                </tr>
+            `;
+            total = 0;
+            document.getElementById('resta').value = '';
+            document.getElementById('facturaImagen').innerHTML = '';
+            document.getElementById('facturaImagen').style.display = 'none';
+            document.getElementById('downloadBtn').style.display = 'none';
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</body>
+</html>
